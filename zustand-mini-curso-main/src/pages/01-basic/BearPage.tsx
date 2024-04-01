@@ -1,3 +1,4 @@
+import { useShallow } from 'zustand/react/shallow';
 import { WhiteCard } from '../../components';
 import { useBearStore } from '../../stores';
 
@@ -11,18 +12,10 @@ export const BearPage = () => {
       <hr />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-
-        <WhiteCard centered>
-          <BlackBears />
-        </WhiteCard>
-
-        <WhiteCard centered>
-          <PolarBear />
-        </WhiteCard>
-
-        <WhiteCard centered>
-          <PandaBears />
-        </WhiteCard>
+        <BlackBears />
+        <PolarBear />
+        <PandaBears />
+        <BearDisplay />
       </div>
     </>
   );
@@ -35,7 +28,7 @@ export const BlackBears = () => {
   const increaseBlackBears = useBearStore(state => state.increaseBlackBears);
 
   return (
-    <>
+    <WhiteCard centered>
       <h2>Osos Negros</h2>
 
       <div className="flex flex-col md:flex-row">
@@ -47,7 +40,7 @@ export const BlackBears = () => {
           onClick={() => increaseBlackBears(-1)}
         >-1</button>
       </div>
-    </>
+    </WhiteCard>
   )
 }
 
@@ -56,7 +49,7 @@ export const PolarBear = () => {
   const polarBears = useBearStore(state => state.polarBears);
   const increasePolarBears = useBearStore(state => state.increasePolarBears);
   return (
-    <>
+    <WhiteCard centered>
       <h2>Osos Polares</h2>
 
       <div className="flex flex-col md:flex-row">
@@ -69,7 +62,7 @@ export const PolarBear = () => {
         >-1</button>
 
       </div>
-    </>
+    </WhiteCard>
   )
 }
 
@@ -80,7 +73,7 @@ export const PandaBears = () => {
   const increasePandaBears = useBearStore(state => state.increasePandaBears)
 
   return (
-    <>
+    <WhiteCard centered>
       <h2>Osos Pandas</h2>
 
       <div className="flex flex-col md:flex-row">
@@ -92,7 +85,42 @@ export const PandaBears = () => {
           onClick={() => increasePandaBears(-1)}
         >-1</button>
       </div>
-    </>
+    </WhiteCard>
+  )
+}
+
+
+
+
+export const BearDisplay = () => {
+
+  const bears = useBearStore(useShallow(state => state.bears))
+  const doNothing = useBearStore(state => state.doNothing)
+  const addBears = useBearStore(state => state.addBear)
+  const clearBears = useBearStore(state => state.clearBears)
+
+  return (
+    <WhiteCard centered className='gap-2'>
+      <h1>Osos</h1>
+      <button
+        onClick={() => doNothing()}
+      >
+        Do Nothing
+      </button>
+      <button
+        onClick={() => addBears()}
+      >
+        Add Bear
+      </button>
+      <button
+        onClick={() => clearBears()}
+      >
+        Clear Bears
+      </button>
+      <pre>
+        {JSON.stringify(bears, null, 2)}
+      </pre>
+    </WhiteCard>
   )
 }
 
